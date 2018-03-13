@@ -33,14 +33,11 @@ for($i=0 ; $i < count($provedores); $i++){
     }
 }
 
-$nomesd = explode(", ",$nomed);
-$emailsd = explode(", ",$emaild);
 
-if((count($nomesd)==count($emailsd)) && $provedorValido){
-    for ($i=0 ; $i < count($nomesd); $i++){
-
+if($provedorValido){
+    for ($i=0 ; $i < count($nomed); $i++){
         if($pos = strpos($mensagem, "@@nome")){
-            $mensagemAlt = str_replace("@@nome",$nomesd[$i],$mensagem);
+            $mensagemAlt = str_replace("@@nome",$nomed[$i],$mensagem);
             $nomeNoCorpo = true;
         }
 
@@ -60,7 +57,7 @@ if((count($nomesd)==count($emailsd)) && $provedorValido){
 
             //Recipients
             $mail->setFrom($email, $nome);
-            $mail->addAddress($emailsd[$i], $nomesd[$i]);     // Add a recipient
+            $mail->addAddress($emaild[$i], $nomed[$i]);     // Add a recipient
             //$mail->addCC('cc@example.com');
             //$mail->addBCC('bcc@example.com');
 
@@ -80,9 +77,9 @@ if((count($nomesd)==count($emailsd)) && $provedorValido){
             }    
             $mail->send();
             echo $mensagem;
-            echo 'Message has been sent';
+            echo 'A Mensagem foi enviada';
         } catch (Exception $e) {
-            echo 'Message could not be sent. Mailer Error: ', $mail->ErrorInfo;
+            echo 'A mensagem nao pode ser enviada. Mailer Error: ', $mail->ErrorInfo;
         }
     }
 }else{

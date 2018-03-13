@@ -1,13 +1,35 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <title>Enviar E-mail</title>
+        <title>Enviar E-mails de mala direta</title>
         <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <style>
+            textarea{
+                resize: none;
+            }
+        </style>
     </head>
     <body>
         <script>
             var provedores = ["gmail","bol","hotmail"];
             var provedor;
+            
+            
+            function iRow(){
+                var linha = document.getElementById('tbDestinatario').getElementsByTagName('tbody')[0].insertRow();
+                var nome = linha.insertCell(0);
+                var email = linha.insertCell(1);
+                var apagar = linha.insertCell(2);
+                
+                nome.innerHTML = '<input type="text" class="form-control" name="nomed[]" required />';
+                email.innerHTML= '<input type="email" class="form-control" name="emaild[]" required />';
+                apagar.innerHTML = '<button id="aDestinatario" name="aDestinatario" type="button" class="btn btn-danger" onclick="aRow('+linha.id+')">Apagar</button>';
+            }
+            
+            function aRow(indice){
+                document.getElementById('tbDestinatario').getElementsByTagName('tbody')[0].deleteRow(indice);
+            }
             
             function emailBlur(){
                 provedor = document.getElementById("email").value;
@@ -25,27 +47,69 @@
                 return provedor == element;                
             }
         </script>
-
-        <h1>Mala direta</h1>
-        <p>separe os emails e nomes dos destinatarios por ", " e no corpo da mensagem digite @@nome para a mensagem ficar personalizada com o nome de cada destinatario.</p>
-        <br>  
-
-        <form action="./enviar.php" method="POST" id="form">
-            <label for="nome">Nome: </label>
-            <input type="text" name="nome" id="nome"><br>
-            <label for="email">E-mail: </label>
-            <input type="email" name="email" id="email" onblur="emailBlur()"><br>
-            <label for="senha">Senha: </label>
-            <input type="password" name="senha" id="senha"><br>
-            <label for="nomed">Nome Destinatario:</label>
-            <input type="text" name="nomed" id="nomed"><br>
-            <label for="emaild">E-mail Destinatario: </label>
-            <input type="text" name="emaild" id="emaild"><br>
-            <label for="assunto">Assunto: </label>
-            <input type="text" name="assunto" id="assunto"><br>
-            <label for="mensagem">Corpo da Mensagem: </label><br>
-            <textarea rows="8" cols="100" name="mensagem" id="mensagem"></textarea><br>
-            <button type="submit">Enviar</button>
-        </form>
+            
+        <div class="container">
+            <br><br>
+            <h1 class="text-center">Mala direta</h1>
+            <p>digite @@nome no corpo do texto para personalizar cada mensagem enviada com o nome do destinatário</p>
+            <br><br>
+            <form action="./enviar.php" method="POST" id="form">
+                <div class="row">
+                    <div class="col-sm-1 text-right"><label for="nome">Nome: </label></div>
+                    <div class="col-sm-11"><input type="text" name="nome" id="nome" class="form-control" required></div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-sm-1 text-right"><label for="email">E-mail: </label></div>
+                    <div class="col-sm-11"><input type="email" name="email" id="email" onblur="emailBlur()" class="form-control" required></div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-sm-1 text-right"><label for="senha">Senha: </label></div>
+                    <div class="col-sm-11"><input type="password" name="senha" id="senha" class="form-control" required></div>
+                </div>
+                <br>
+                <div class="row">
+                    <table id="tbDestinatario" class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Destinatario</th>
+                                <th scope="col">Email do Destinatario</th>
+                                <th scope="col">Apagar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr scope="row">
+                                <td>
+                                    <input type="text" class="form-control" name="nomed[]" required/>
+                                </td>
+                                <td>
+                                    <input type="email" class="form-control" name="emaild[]" required/>
+                                </td>
+                                <td>
+                                    <button id="aDestinatario" name="aDestinatario" type="button" class="btn btn-danger" onclick="aRow(0)">Apagar</button>
+                                </td>
+                            </tr>
+                        </tbody>                        
+                    </table>                                       
+                </div>
+                <button class="btn btn-success" id="iDestinatario" name="iDestinatario" type="button" onclick="iRow()">Inserir Destinatário</button>
+                <br>
+                <br>
+                <div class="row">
+                    <div class="col-sm-1 text-right"><label for="assunto">Assunto: </label></div>
+                    <div class="col-sm-11"><input type="text" name="assunto" id="assunto" class="form-control"></div>
+                </div>
+                <br>
+                <br>
+                <div class="col-sm-2">
+                    <label for="mensagem">Corpo da Mensagem: </label>
+                </div>                
+                <br>
+                <textarea rows="10" cols="100" name="mensagem" id="mensagem" class="form-control"></textarea><br>
+                <button type="submit" class="btn btn-block btn-primary">Enviar</button>
+            </form>
+        </div>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     </body>
 </html>
